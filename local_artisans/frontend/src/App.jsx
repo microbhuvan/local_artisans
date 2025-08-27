@@ -40,66 +40,94 @@ export const App = () => {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 24 }}>
-      <h1>Local Artisans: Marketing Planner</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Category</label>
-          <input
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Price Range</label>
-          <input
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Region</label>
-          <input value={region} onChange={(e) => setRegion(e.target.value)} />
-        </div>
-        <div>
-          <label>Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-          />
-        </div>
-        <button disabled={loading} type="submit">
-          {loading ? "Analyzing…" : "Generate Plan"}
-        </button>
-      </form>
+    <div className="container">
+      <div className="grid-2">
+        <div className="card">
+          <h1>Local Artisans: Marketing Planner</h1>
+          <p className="muted" style={{ marginTop: -8, marginBottom: 20 }}>
+            Upload a product and get a marketing plan. Press{" "}
+            <span className="kbd">Enter</span> to submit.
+          </p>
+          <form onSubmit={handleSubmit} className="grid">
+            <div>
+              <label>Title</label>
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                placeholder="Handmade clay pot"
+              />
+            </div>
+            <div>
+              <label>Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                placeholder="Describe materials, style, size, story"
+              />
+            </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+            <div className="row">
+              <div>
+                <label>Category</label>
+                <input
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="Home decor"
+                />
+              </div>
+              <div>
+                <label>Price Range</label>
+                <input
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(e.target.value)}
+                  placeholder="$20 - $30"
+                />
+              </div>
+            </div>
 
-      {result && (
-        <div style={{ marginTop: 24 }}>
-          <h2>Plan (Provider: {result.provider})</h2>
-          <pre style={{ background: "#f6f8fa", padding: 12, overflow: "auto" }}>
-            {JSON.stringify(result.plan, null, 2)}
-          </pre>
+            <div className="row">
+              <div>
+                <label>Region</label>
+                <input
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  placeholder="Bengaluru, India"
+                />
+              </div>
+              <div>
+                <label>Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                />
+              </div>
+            </div>
+
+            <div className="actions">
+              <button disabled={loading} type="submit">
+                {loading ? "Analyzing…" : "Generate Plan"}
+              </button>
+              {error && <span style={{ color: "#ef4444" }}>{error}</span>}
+            </div>
+          </form>
         </div>
-      )}
+
+        <div className="card result">
+          <h2>Result</h2>
+          {!result && (
+            <p className="muted">No plan yet. Submit the form to generate.</p>
+          )}
+          {result && (
+            <>
+              <p className="muted">Provider: {result.provider}</p>
+              <pre>{JSON.stringify(result.plan, null, 2)}</pre>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
